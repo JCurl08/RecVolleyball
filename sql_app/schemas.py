@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-# Base Models for pydantic
+# This is our object oriented models
 
 class ItemBase(BaseModel):
     title: str
