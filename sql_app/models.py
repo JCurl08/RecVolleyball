@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, DateTime, Table
+from sqlalchemy import Column, ForeignKey, Integer, String, Date, DateTime
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -9,15 +9,15 @@ from database import Base
 class Member_Attendance(Base):
     __tablename__ = "member_attendances"
 
-    username = Column(ForeignKey("users.username"), primary_key=True, index=True)
-    league_id = Column(ForeignKey("sessions.league_id"), primary_key=True, index=True)
-    start_time = Column(ForeignKey("sessions.start_time"), primary_key=True, index=True)
+    username = Column(String, ForeignKey("users.username"), primary_key=True, index=True)
+    league_id = Column(Integer, ForeignKey("sessions.league_id"), primary_key=True, index=True)
+    start_time = Column(DateTime, ForeignKey("sessions.start_time"), primary_key=True, index=True)
 
 # Entity Tables
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, primary_key=True, index=True)
     first_name = Column(String, nullable = False, index=True)
     last_name = Column(String, nullable=False, index=True)
     email = Column(String, unique=True, nullable=False, index=True)
@@ -25,9 +25,9 @@ class User(Base):
     phone_number = Column(Integer, nullable=False, index=True)
     hashed_password = Column(String)
 
-    memberships = relationship("League", secondary="Membership_Purchase", back_populates="members")
-    membership_sessions = relationship("Session", secondary="Member_Attendance", back_populates="members_attended")
-    drop_in_sessions = relationship("Session", secondary="Drop_In_Purchase", back_populates="drop_ins")
+    memberships = relationship("League", secondary="membership_purchases", back_populates="members")
+    membership_sessions = relationship("Session", secondary="member_attendances", back_populates="members_attended")
+    drop_in_sessions = relationship("Session", secondary="drop_in_purchases", back_populates="drop_ins")
 
 class League(Base):
     __tablename__ = "leagues"
@@ -38,7 +38,7 @@ class League(Base):
     membership_cost = Column(Integer, nullable=False, index=True)
     drop_in_cost = Column(Integer, index=True)
 
-    members = relationship("User", secondary="Membership_Purcahse", back_populates="league_id")
+    members = relationship("User", secondary="membership_purchases", back_populates="league_id")
     sessions = relationship("Session", back_populates="league_id")
 
 class Session(Base):
@@ -48,8 +48,8 @@ class Session(Base):
     start_time = Column(DateTime, primary_key=True, index=True)
     end_time = Column(DateTime, nullable=False, index=True)
 
-    members_attended = relationship("User", secondary="Member_Attendace", back_populates="membership_sessions")
-    drop_ins = relationship("User", secondary="Drop_In_Purchase", back_populates="drop_in_sessions")
+    members_attended = relationship("User", secondary="member_attendances", back_populates="membership_sessions")
+    drop_ins = relationship("User", secondary="drop_in_purchases", back_populates="drop_in_sessions")
 
 class Purchase(Base):
     __tablename__ = "purchases"

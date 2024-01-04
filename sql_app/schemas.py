@@ -1,27 +1,23 @@
+from datetime import date, datetime
+
 from pydantic import BaseModel
 
 # This is our object oriented models
-
-class ItemBase(BaseModel):
-    title: str
+class LeagueBase(BaseModel):
+    name: str
     description: str | None = None
+    membership_cost: int | None = 0
+    drop_in_cost: int | None = 0
 
-
-class ItemCreate(ItemBase):
-    pass
-
-
-class Item(ItemBase):
+class League(LeagueBase):
     id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
-
 
 class UserBase(BaseModel):
+    first_name: str
+    last_name: str
     email: str
-
+    birthdate: date
+    phone_number: int
 
 class UserCreate(UserBase):
     password: str
@@ -29,8 +25,8 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    is_active: bool
-    items: list[Item] = []
+
+    memberships: list[League] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
