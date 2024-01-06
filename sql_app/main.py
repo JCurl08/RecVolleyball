@@ -47,6 +47,13 @@ def read_user_email(email: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+@app.put("/users/{username}", response_model=schemas.User)
+def update_user(username: str, user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.update_user(db, username, user)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
 # Get user's memberships
 
 # Get user's sessions

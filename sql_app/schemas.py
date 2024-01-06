@@ -13,15 +13,15 @@ from pydantic import BaseModel
 #     id: int
 
 class UserBase(BaseModel):
-    username: str
-    first_name: str
-    last_name: str
-    email: str
-    birthday: date
-    phone_number: int
+    username: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    email: str | None = None
+    birthday: date | None = None
+    phone_number: int | None = None
 
 class UserCreate(UserBase):
-    password: str
+    password: str | None = None
 
 
 class User(UserBase):
