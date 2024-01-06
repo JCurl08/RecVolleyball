@@ -6,12 +6,12 @@ from database import Base
 # These are essentially the make table statements
 
 # Relationship Tables
-class Member_Attendance(Base):
-    __tablename__ = "member_attendances"
+# class Member_Attendance(Base):
+#     __tablename__ = "member_attendances"
 
-    username = Column(String, ForeignKey("users.username"), primary_key=True, index=True)
-    league_id = Column(Integer, ForeignKey("sessions.league_id"), primary_key=True, index=True)
-    start_time = Column(DateTime, ForeignKey("sessions.start_time"), primary_key=True, index=True)
+#     username = Column(String, ForeignKey("users.username"), primary_key=True, index=True)
+#     league_id = Column(Integer, ForeignKey("sessions.league_id"), primary_key=True, index=True)
+#     start_time = Column(DateTime, ForeignKey("sessions.start_time"), primary_key=True, index=True)
 
 # Entity Tables
 class User(Base):
@@ -25,52 +25,52 @@ class User(Base):
     phone_number = Column(Integer, nullable=False, index=True)
     hashed_password = Column(String)
 
-    memberships = relationship("League", secondary="membership_purchases", back_populates="members")
-    membership_sessions = relationship("Session", secondary="member_attendances", back_populates="members_attended")
-    drop_in_sessions = relationship("Session", secondary="drop_in_purchases", back_populates="drop_ins")
+    # memberships = relationship("League", secondary="membership_purchases", back_populates="members")
+    # membership_sessions = relationship("Session", secondary="member_attendances", back_populates="members_attended")
+    # drop_in_sessions = relationship("Session", secondary="drop_in_purchases", back_populates="drop_ins")
 
-class League(Base):
-    __tablename__ = "leagues"
+# class League(Base):
+#     __tablename__ = "leagues"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False, index=True)
-    description = Column(String, index=True)
-    membership_cost = Column(Integer, nullable=False, index=True)
-    drop_in_cost = Column(Integer, index=True)
+#     id = Column(Integer, primary_key=True, index=True)
+#     name = Column(String, nullable=False, index=True)
+#     description = Column(String, index=True)
+#     membership_cost = Column(Integer, nullable=False, index=True)
+#     drop_in_cost = Column(Integer, index=True)
 
-    members = relationship("User", secondary="membership_purchases", back_populates="league_id")
-    sessions = relationship("Session", back_populates="league_id")
+#     members = relationship("User", secondary="membership_purchases", back_populates="league_id")
+#     sessions = relationship("Session", back_populates="league_id")
 
-class Session(Base):
-    __tablename__ = "sessions"
+# class Session(Base):
+#     __tablename__ = "sessions"
 
-    league_id = Column(Integer, ForeignKey("leagues.id"), primary_key=True, index=True)
-    start_time = Column(DateTime, primary_key=True, index=True)
-    end_time = Column(DateTime, nullable=False, index=True)
+#     league_id = Column(Integer, ForeignKey("leagues.id"), primary_key=True, index=True)
+#     start_time = Column(DateTime, primary_key=True, index=True)
+#     end_time = Column(DateTime, nullable=False, index=True)
 
-    members_attended = relationship("User", secondary="member_attendances", back_populates="membership_sessions")
-    drop_ins = relationship("User", secondary="drop_in_purchases", back_populates="drop_in_sessions")
+#     members_attended = relationship("User", secondary="member_attendances", back_populates="membership_sessions")
+#     drop_ins = relationship("User", secondary="drop_in_purchases", back_populates="drop_in_sessions")
 
-class Purchase(Base):
-    __tablename__ = "purchases"
+# class Purchase(Base):
+#     __tablename__ = "purchases"
 
-    id = Column(Integer, primary_key=True, index=True)
-    ammount = Column(Integer, nullable=False, index=True)
-    payment_method = Column(String, nullable=False, index=True)
-    date = Column(DateTime, nullable=False, index=True)
+#     id = Column(Integer, primary_key=True, index=True)
+#     ammount = Column(Integer, nullable=False, index=True)
+#     payment_method = Column(String, nullable=False, index=True)
+#     date = Column(DateTime, nullable=False, index=True)
 
-class Membership_Purchase(Base):
-    __tablename__ = "membership_purchases"
+# class Membership_Purchase(Base):
+#     __tablename__ = "membership_purchases"
 
-    id = Column(Integer, ForeignKey("purchases.id"), primary_key=True, index=True)
-    username = Column(String, ForeignKey("users.username"), index=True)
-    member_role = Column(String, index=True)
-    league_id = Column(Integer, ForeignKey("leagues.id"), index=True)
+#     id = Column(Integer, ForeignKey("purchases.id"), primary_key=True, index=True)
+#     username = Column(String, ForeignKey("users.username"), index=True)
+#     member_role = Column(String, index=True)
+#     league_id = Column(Integer, ForeignKey("leagues.id"), index=True)
 
-class Drop_In_Purchase(Base):
-    __tablename__ = "drop_in_purchases"
+# class Drop_In_Purchase(Base):
+#     __tablename__ = "drop_in_purchases"
 
-    id = Column(Integer, ForeignKey("purchases.id"), primary_key=True, index=True)
-    username = Column(String, ForeignKey("users.username"), index=True)
-    league_id = Column(Integer, ForeignKey("sessions.league_id"), index=True)
-    session_start_time = Column(DateTime, ForeignKey("sessions.start_time"))
+#     id = Column(Integer, ForeignKey("purchases.id"), primary_key=True, index=True)
+#     username = Column(String, ForeignKey("users.username"), index=True)
+#     league_id = Column(Integer, ForeignKey("sessions.league_id"), index=True)
+#     session_start_time = Column(DateTime, ForeignKey("sessions.start_time"))
